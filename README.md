@@ -12,7 +12,7 @@
 ## Структура проекта
 
 ```
-finalproject_skliadnev/
+finalproject_skliadnev_m26-555/
 ├── data/
 │   ├── users.json            # пользователи (хеш пароля + соль)
 │   ├── portfolios.json       # портфели и кошельки
@@ -49,8 +49,8 @@ finalproject_skliadnev/
 Требуется Python 3.12+ и [uv](https://docs.astral.sh/uv/).
 
 ```bash
-git clone https://github.com/askliadnev1/finalproject_skliadnev.git
-cd finalproject_skliadnev
+git clone https://github.com/askliadnev1/finalproject_skliadnev_m26-555.git
+cd finalproject_skliadnev_m26-555
 make install
 ```
 
