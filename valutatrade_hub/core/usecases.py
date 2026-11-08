@@ -16,9 +16,10 @@ from valutatrade_hub.core.exceptions import (
 from valutatrade_hub.core.models import Portfolio, User
 from valutatrade_hub.core.utils import (
     BASE_CURRENCY,
-    STUB_RATES_TO_USD,
     convert_rate,
+    is_crypto,
     parse_iso,
+    utc_now_iso,
     validate_amount,
     validate_password,
     validate_username,
@@ -26,8 +27,8 @@ from valutatrade_hub.core.utils import (
 from valutatrade_hub.decorators import log_action
 from valutatrade_hub.infra.database import DatabaseManager
 from valutatrade_hub.infra.settings import SettingsLoader
+from valutatrade_hub.parser_service.updater import create_updater
 
-STUB_SOURCE = "Stub"
 DEFAULT_TTL_SECONDS = 300
 
 _db = DatabaseManager()
@@ -35,11 +36,6 @@ _settings = SettingsLoader()
 
 
 # ---------- время и свежесть курсов ----------
-
-
-def utc_now_iso() -> str:
-    """Текущее время UTC в формате ISO с суффиксом Z."""
-    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _age_seconds(timestamp: str) -> float:
@@ -130,26 +126,56 @@ def _change(code: str, before: float, after: float) -> dict[str, Any]:
 # ---------- курсы ----------
 
 
-def refresh_rates() -> None:
-    """Обновить кеш курсов.
+def refresh_rates() -> int:
+    """Обновить кеш курсов через Parser Service."""
+    result = create_updater().run_update()
+    if not result["updated"]:
+        raise ApiRequestError("; ".join(result["errors"]) or "нет данных")
+    return result["updated"]
 
-    Пока Parser Service не подключён, в кеш пишутся курсы-заглушки.
-    """
-    timestamp = utc_now_iso()
-    cache = _db.load_rates()
-    for pair, rate in STUB_RATES_TO_USD.items():
-        cache["pairs"][pair] = {
-            "rate": rate,
-            "updated_at": timestamp,
-            "source": STUB_SOURCE,
-        }
-    cache["last_refresh"] = timestamp
-    _db.save_rates(cache)
+
+def update_rates(source: str | None = None) -> dict[str, Any]:
+    """Немедленное обновление курсов (команда update-rates)."""
+    return create_updater(source).run_update()
 
 
 def _flat_rates(cache: dict) -> dict[str, float]:
     """{'BTC_USD': {...}} → {'BTC_USD': 59300.0}."""
     return {pair: float(info["rate"]) for pair, info in cache["pairs"].items()}
+
+
+def list_cached_rates(
+    currency: str | None = None, top: int | None = None, base: str | None = None
+) -> dict[str, Any]:
+    """Курсы из локального кеша с фильтрами --currency, --top, --base."""
+    cache = _db.load_rates()
+    if not cache["pairs"]:
+        raise ValueError(
+            "Локальный кеш курсов пуст. Выполните 'update-rates', "
+            "чтобы загрузить данные."
+        )
+    base_code = get_currency(base).code if base else BASE_CURRENCY
+    rates = _flat_rates(cache)
+    codes = sorted({pair.split("_")[0] for pair in rates} | {BASE_CURRENCY})
+
+    rows = []
+    for code in codes:
+        rate = convert_rate(code, base_code, rates)
+        if code != base_code and rate is not None:
+            rows.append({"pair": f"{code}_{base_code}", "code": code, "rate": rate})
+
+    if currency:
+        code = currency.strip().upper()
+        rows = [row for row in rows if row["code"] == code]
+        if not rows:
+            raise ValueError(f"Курс для '{code}' не найден в кеше.")
+    if top is not None:
+        if top <= 0:
+            raise ValueError("--top должен быть положительным числом")
+        crypto_rows = [row for row in rows if is_crypto(row["code"])]
+        rows = sorted(crypto_rows, key=lambda row: row["rate"], reverse=True)[:top]
+
+    return {"last_refresh": cache["last_refresh"], "base": base_code, "rows": rows}
 
 
 def _lookup_rate(cache: dict, from_code: str, to_code: str) -> tuple[float, str] | None:

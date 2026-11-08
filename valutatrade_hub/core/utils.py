@@ -4,7 +4,7 @@ import hashlib
 import math
 import secrets
 from collections.abc import Mapping
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Any
 
 from valutatrade_hub.core.currencies import (
@@ -130,3 +130,8 @@ def format_balance(code: str, value: float) -> str:
 def format_money(value: float) -> str:
     """Денежная сумма с разделителем тысяч: 3,329.00."""
     return f"{value:,.2f}"
+
+
+def utc_now_iso() -> str:
+    """Текущее время UTC в формате ISO с суффиксом Z."""
+    return datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")

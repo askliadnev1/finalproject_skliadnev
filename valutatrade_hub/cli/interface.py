@@ -79,6 +79,19 @@ def build_parser() -> tuple[
     rate.add_argument("--from", dest="from_code", required=True, help="исходная валюта")
     rate.add_argument("--to", dest="to_code", required=True, help="целевая валюта")
 
+    update = add("update-rates", "Обновить курсы из внешних API")
+    update.add_argument(
+        "--source",
+        default=None,
+        choices=("coingecko", "exchangerate"),
+        help="только один источник",
+    )
+
+    show_rates = add("show-rates", "Курсы из локального кеша")
+    show_rates.add_argument("--currency", default=None, help="одна валюта")
+    show_rates.add_argument("--top", type=int, default=None, help="N дорогих крипто")
+    show_rates.add_argument("--base", default=None, help="базовая валюта")
+
     return parser, commands
 
 
@@ -96,6 +109,8 @@ class ValutaTradeCLI:
             "buy": self._buy,
             "sell": self._sell,
             "get-rate": self._get_rate,
+            "update-rates": self._update_rates,
+            "show-rates": self._show_rates,
         }
 
     def run(self) -> None:
@@ -279,6 +294,25 @@ class ValutaTradeCLI:
             print(f"Обратный курс {target}→{source}: {reverse}")
         if result["stale"]:
             print("Внимание: данные устарели. Обновите курсы командой update-rates.")
+
+    def _update_rates(self, args: argparse.Namespace) -> None:
+        result = usecases.update_rates(args.source)
+        if not result["errors"]:
+            print(
+                f"Update successful. Total rates updated: {result['updated']}. "
+                f"Last refresh: {format_timestamp(result['last_refresh'])}"
+            )
+        elif result["updated"]:
+            print("Update completed with errors. Check logs/parser.log for details.")
+        else:
+            print("Update failed. Check logs/parser.log for details.")
+
+    def _show_rates(self, args: argparse.Namespace) -> None:
+        result = usecases.list_cached_rates(args.currency, args.top, args.base)
+        updated = format_timestamp(result["last_refresh"] or "—")
+        print(f"Rates from cache (updated at {updated}):")
+        for row in result["rows"]:
+            print(f"- {row['pair']}: {format_rate(row['rate'])}")
 
 
 def main() -> None:
