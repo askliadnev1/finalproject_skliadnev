@@ -166,5 +166,173 @@
       "status_code": 200,
       "etag": null
     }
+  },
+  {
+    "id": "BTC_USD_2026-11-08T19:55:56Z",
+    "from_currency": "BTC",
+    "to_currency": "USD",
+    "rate": 75848.0,
+    "timestamp": "2026-11-08T19:55:56Z",
+    "source": "CoinGecko",
+    "meta": {
+      "raw_id": "bitcoin",
+      "request_ms": 784,
+      "status_code": 200,
+      "etag": "W/\"e8703a43e8b47201338bbf2e073a57ee\""
+    }
+  },
+  {
+    "id": "ETH_USD_2026-11-08T19:55:56Z",
+    "from_currency": "ETH",
+    "to_currency": "USD",
+    "rate": 2230.86,
+    "timestamp": "2026-11-08T19:55:56Z",
+    "source": "CoinGecko",
+    "meta": {
+      "raw_id": "ethereum",
+      "request_ms": 784,
+      "status_code": 200,
+      "etag": "W/\"e8703a43e8b47201338bbf2e073a57ee\""
+    }
+  },
+  {
+    "id": "SOL_USD_2026-11-08T19:55:56Z",
+    "from_currency": "SOL",
+    "to_currency": "USD",
+    "rate": 89.54,
+    "timestamp": "2026-11-08T19:55:56Z",
+    "source": "CoinGecko",
+    "meta": {
+      "raw_id": "solana",
+      "request_ms": 784,
+      "status_code": 200,
+      "etag": "W/\"e8703a43e8b47201338bbf2e073a57ee\""
+    }
+  },
+  {
+    "id": "EUR_USD_2026-11-08T19:55:56Z",
+    "from_currency": "EUR",
+    "to_currency": "USD",
+    "rate": 1.11632061,
+    "timestamp": "2026-11-08T19:55:56Z",
+    "source": "ExchangeRate-API",
+    "meta": {
+      "raw_id": "EUR",
+      "request_ms": 699,
+      "status_code": 200,
+      "etag": null
+    }
+  },
+  {
+    "id": "GBP_USD_2026-11-08T19:55:56Z",
+    "from_currency": "GBP",
+    "to_currency": "USD",
+    "rate": 1.33779264,
+    "timestamp": "2026-11-08T19:55:56Z",
+    "source": "ExchangeRate-API",
+    "meta": {
+      "raw_id": "GBP",
+      "request_ms": 699,
+      "status_code": 200,
+      "etag": null
+    }
+  },
+  {
+    "id": "RUB_USD_2026-11-08T19:55:56Z",
+    "from_currency": "RUB",
+    "to_currency": "USD",
+    "rate": 0.01223324,
+    "timestamp": "2026-11-08T19:55:56Z",
+    "source": "ExchangeRate-API",
+    "meta": {
+      "raw_id": "RUB",
+      "request_ms": 699,
+      "status_code": 200,
+      "etag": null
+    }
+  },
+  {
+    "id": "BTC_USD_2026-11-08T19:56:46Z",
+    "from_currency": "BTC",
+    "to_currency": "USD",
+    "rate": 75849.0,
+    "timestamp": "2026-11-08T19:56:46Z",
+    "source": "CoinGecko",
+    "meta": {
+      "raw_id": "bitcoin",
+      "request_ms": 1175,
+      "status_code": 200,
+      "etag": "W/\"ceb3b2c2a1b67f71f5497c57e382e45d\""
+    }
+  },
+  {
+    "id": "ETH_USD_2026-11-08T19:56:46Z",
+    "from_currency": "ETH",
+    "to_currency": "USD",
+    "rate": 2230.82,
+    "timestamp": "2026-11-08T19:56:46Z",
+    "source": "CoinGecko",
+    "meta": {
+      "raw_id": "ethereum",
+      "request_ms": 1175,
+      "status_code": 200,
+      "etag": "W/\"ceb3b2c2a1b67f71f5497c57e382e45d\""
+    }
+  },
+  {
+    "id": "SOL_USD_2026-11-08T19:56:46Z",
+    "from_currency": "SOL",
+    "to_currency": "USD",
+    "rate": 89.53,
+    "timestamp": "2026-11-08T19:56:46Z",
+    "source": "CoinGecko",
+    "meta": {
+      "raw_id": "solana",
+      "request_ms": 1175,
+      "status_code": 200,
+      "etag": "W/\"ceb3b2c2a1b67f71f5497c57e382e45d\""
+    }
+  },
+  {
+    "id": "EUR_USD_2026-11-08T19:56:46Z",
+    "from_currency": "EUR",
+    "to_currency": "USD",
+    "rate": 1.11632061,
+    "timestamp": "2026-11-08T19:56:46Z",
+    "source": "ExchangeRate-API",
+    "meta": {
+      "raw_id": "EUR",
+      "request_ms": 629,
+      "status_code": 200,
+      "etag": null
+    }
+  },
+  {
+    "id": "GBP_USD_2026-11-08T19:56:46Z",
+    "from_currency": "GBP",
+    "to_currency": "USD",
+    "rate": 1.33779264,
+    "timestamp": "2026-11-08T19:56:46Z",
+    "source": "ExchangeRate-API",
+    "meta": {
+      "raw_id": "GBP",
+      "request_ms": 629,
+      "status_code": 200,
+      "etag": null
+    }
+  },
+  {
+    "id": "RUB_USD_2026-11-08T19:56:46Z",
+    "from_currency": "RUB",
+    "to_currency": "USD",
+    "rate": 0.01223324,
+    "timestamp": "2026-11-08T19:56:46Z",
+    "source": "ExchangeRate-API",
+    "meta": {
+      "raw_id": "RUB",
+      "request_ms": 629,
+      "status_code": 200,
+      "etag": null
+    }
   }
 ]
