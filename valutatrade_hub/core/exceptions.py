@@ -47,3 +47,15 @@ class WalletNotFoundError(ValutaTradeError):
             f"У вас нет кошелька '{code}'. Добавьте валюту: "
             "она создаётся автоматически при первой покупке."
         )
+
+
+class RateUnavailableError(ValutaTradeError):
+    """Курс недоступен: нет данных в кеше и не удалось обновить."""
+
+    def __init__(
+        self, from_code: str, to_code: str, message: str | None = None
+    ) -> None:
+        self.from_code = from_code
+        self.to_code = to_code
+        default = f"Курс {from_code}→{to_code} недоступен. Повторите попытку позже."
+        super().__init__(message or default)
